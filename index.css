@@ -1,0 +1,32 @@
+	.conn-align{
+		width: 500px;
+		margin: 0 auto;
+		border: 1px solid #ddd;
+		margin-top: 10px;
+	}
+	.form-control.form{
+		width: 389px;
+		margin:10px 0px;
+		border-radius: 0px;
+		box-shadow: none;
+	}
+	.btn-submit{
+		border-radius: 0px;
+	}
+	.displayWork{
+		padding: 10px;
+		text-align: left;
+		border: 1px solid #ddd;
+		margin-bottom: 10px;
+	}
+	.displayWork label{
+		width: 90%;
+		font-weight: 300;
+	}
+	.close a img{
+		cursor: pointer;
+	}
+.editable-click, a.editable-click{
+        color: #000 !important;
+        border-bottom: 0px !important;
+    }

@@ -1,0 +1,115 @@
+<!doctype html>
+<html ng-app="mysection">
+<head>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<link rel="stylesheet" type="text/css" href="xeditable.css">
+	<script src="angular.min.js"></script>
+	<script type="text/javascript" src="xeditable.js"></script>
+	<script type="text/javascript">
+	var myapp = angular
+	.module("mysection",["xeditable"])
+	.controller("mycontroller", function ($scope, $filter) {
+		$scope.todoResult = [];
+		var wholeList = [];
+		$scope.todoChecked=[];
+		$scope.check=false;
+		$scope.all=true;
+		// on submit
+		$scope.todosubmit = function() {
+			console.log($scope.todo)
+			if ($scope.todo === undefined || $scope.todo === "") {
+				alert("Type Anything...")
+			}
+			else{
+				$scope.todoResult.push ({'work':$scope.todo,checked:false});
+				wholeList.push({work:$scope.todo,checked:false});
+				$scope.todo = "";
+			}
+		}
+		// on mouseover
+		$scope.hoverIn = function() {
+			this.hoverImg = true;
+		}
+		// on mouseout
+		$scope.hoverOut = function() {
+			this.hoverImg = false;
+		}
+		
+		$scope.checked=function(){
+			$scope.check=true;
+			$scope.all=false;
+            $scope.todoChecked
+        }
+
+        $scope.wholeList=function(){
+        	$scope.check=false;
+        	$scope.all=true;
+            $scope.todoResult = [];
+            angular.forEach(wholeList,function(x){
+                $scope.todoResult.push(x);
+            });
+        }
+		// remove todo
+		$scope.remove = function(item) { 
+			$scope.todoResult.splice($scope.todoResult.indexOf(item), 1);
+			wholeList.splice($scope.todoResult.indexOf(item), 1);
+		}
+		
+		$scope.clickchecked = function(item){
+			if (item.checked == true){
+			$scope.todoChecked.push (item)
+			$scope.todoResult.splice($scope.todoResult.indexOf(item), 1);
+			console.log($scope.todoChecked);
+		}else if(item.checked == false){
+			console.log($scope.todoChecked);
+			$scope.todoResult.push (item)
+			$scope.todoChecked.splice($scope.todoChecked.indexOf(item), 1);
+		}
+		}
+		$scope.Active = function(){
+			$scope.check=false;
+        	$scope.all=true;
+            $scope.todoResult = [];
+            angular.forEach(wholeList,function(x){
+                if(x.checked != true){
+                    $scope.todoResult.push(x);
+                }
+            });
+		}
+	});
+	</script>
+</script>
+</head>
+<body ng-controller="mycontroller">
+	<div class="container conn-align">
+		<h4>TODO LIST</h4>
+		<form editable-form name="textBtnForm" class="form-inline" ng-submit="todosubmit()" >
+			<div class="form-group">
+				<input type="text" class="form-control form" ng-model="todo">
+			</div>
+			<button type="submit" class="btn btn-submit btn-default">Submit</button>
+
+		</form>
+		<div ng-repeat="x in todoResult" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" class="displayWork" ng-show="all">
+			<input type="checkbox" ng-model="x.checked" ng-change="clickchecked(x)">
+			<a href="#" form="itemForm" editable-text="x.work" ng-click="itemForm.$show()">{{ x.work }}</a>
+			<span ng-show="hoverImg" class="close">
+				<a><img src="close-img.png" ng-click="remove(x)"></a>
+			</span>
+		</div>
+		<div ng-repeat="checked in todoChecked" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" class="displayWork" ng-show="check">
+			<input type="checkbox" ng-model="checked.checked" ng-click="clickchecked(checked)">
+			<a href="#" form="itemForm" editable-text="checked.work" ng-click="itemForm.$show()">{{ checked.work }}</a>
+			<span ng-show="hoverImg" class="close">
+				<a><img src="close-img.png" ng-click="remove(checked)"></a>
+			</span>
+		</div>
+		<button type="submit" ng-click="checked()" class="btn btn-submit btn-default">Checked</button>
+		<button type="submit" ng-click="wholeList()" class="btn btn-submit btn-default">All</button>
+		<button type="submit" ng-click="Active()" class="btn btn-submit btn-default">Active</button>
+
+		
+	</div>
+</body>
+</html>
